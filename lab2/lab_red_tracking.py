@@ -15,7 +15,9 @@ def try_open_camera(index=0):
 
 def main():
     cv.namedWindow("HSV", cv.WINDOW_NORMAL)
-    cv.namedWindow("Mask (raw)", cv.WINDOW_NORMAL)  # новое окно
+    cv.namedWindow("Mask (raw)", cv.WINDOW_NORMAL)
+    cv.namedWindow("Mask (morph)", cv.WINDOW_NORMAL)
+ 
 
     cap = try_open_camera(0)
     if not cap.isOpened():
@@ -42,8 +44,15 @@ def main():
         mask2 = cv.inRange(hsv, lower2, upper2)
         mask_raw = cv.bitwise_or(mask1, mask2)      # Задание 2
 
+        
+        kernel = cv.getStructuringElement(cv.MORPH_RECT, (5, 5))
+        opened = cv.morphologyEx(mask_raw, cv.MORPH_OPEN, kernel)
+        mask_morph = cv.morphologyEx(opened, cv.MORPH_CLOSE, kernel)
+
+    
         cv.imshow("HSV", hsv)
         cv.imshow("Mask (raw)", mask_raw)
+        cv.imshow("Mask (morph)", mask_morph) 
 
         key = cv.waitKey(1) & 0xFF
         if key in (27, ord('q')):
