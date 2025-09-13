@@ -17,7 +17,8 @@ def main():
     cv.namedWindow("HSV", cv.WINDOW_NORMAL)
     cv.namedWindow("Mask (raw)", cv.WINDOW_NORMAL)
     cv.namedWindow("Mask (morph)", cv.WINDOW_NORMAL)
- 
+    cv.namedWindow("Result", cv.WINDOW_NORMAL)
+
 
     cap = try_open_camera(0)
     if not cap.isOpened():
@@ -53,6 +54,27 @@ def main():
         cv.imshow("HSV", hsv)
         cv.imshow("Mask (raw)", mask_raw)
         cv.imshow("Mask (morph)", mask_morph) 
+
+        contours, _ = cv.findContours(mask_morph, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+
+        result = frame.copy()
+        area = 0
+        center = None
+
+        if contours:
+            largest = max(contours, key=cv.contourArea)
+            area = cv.contourArea(largest)
+            M = cv.moments(largest)
+            if M["m00"] != 0:
+                 cx = int(M["m10"] / M["m00"])
+                 cy = int(M["m01"] / M["m00"])
+                 center = (cx, cy)
+                 cv.drawMarker(result, center, (0, 0, 0), cv.MARKER_CROSS, 12, 2)
+
+        cv.putText(result, f"Area: {int(area)}", (10, 30),
+           cv.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 2, cv.LINE_AA)
+        cv.imshow("Result", result)
+
 
         key = cv.waitKey(1) & 0xFF
         if key in (27, ord('q')):
