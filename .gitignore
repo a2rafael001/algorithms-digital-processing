@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Large outputs
+out/
+*.mp4
+*.avi
+*.mkv
+
+# Optionally ignore raw logs if они большие
+# logs/*.csv
+
+# IDE
+.idea/
+.vscode/
