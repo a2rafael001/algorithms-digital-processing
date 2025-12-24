@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# ML / YOLO
+runs/
+datasets/
+data/
+*.pt
+*.onnx
+*.zip
+*.7z
+*.rar
+*.mp4
+
+# OS/IDE
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

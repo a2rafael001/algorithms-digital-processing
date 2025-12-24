@@ -1,0 +1,8 @@
+path: D:/apps/CS_Aimbot/data
+
+train: images/train
+val: images/val
+
+nc: 1
+names:
+  - enemy
